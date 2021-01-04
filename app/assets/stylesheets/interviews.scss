@@ -6,7 +6,7 @@
     padding: 30px 100px;
 }
 
-.index__create-interview-link, .new__home-link{
+.index__create-interview-link, .home-link{
     display: flex;
     justify-content: center;
     padding-bottom: 30px;
@@ -19,7 +19,11 @@
     margin-bottom: 20px;
 }
 
-.new__form-container{
+.index__interview-links{
+    padding: 10px 0 20px 0;
+}
+
+.new__form-container, .edit__form-container{
     border: 1px solid blue;
     border-radius: 5px;
     padding: 0 20px;

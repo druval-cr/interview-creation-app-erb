@@ -8,7 +8,10 @@
             <p>Start Time: <%= interview.start_time %></p>
             <p>End Time: <%= interview.end_time %></p>
             <p>Participants: <%= @map_interview_participants[interview.id] %></p>
+            <div class = "index__interview-links">
+                <%= link_to "Edit", edit_interview_path(interview) %>
             <%# link_to "Resume Download", interview.resume.url(:original, false) %>
+            </div>
         </div>
     <% end %>
 <div>

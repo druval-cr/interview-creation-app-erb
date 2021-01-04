@@ -48,7 +48,51 @@ class InterviewsController < ApplicationController
 		end
 		@interview.save
 		redirect_to interviews_path
-    end
+	end
+	
+	def edit
+		@interview = Interview.find(params[:id])
+		@default_participant_id_array = Array.new
+		@interview.participants.each do |participant|
+			@default_participant_id_array << participant.id
+		end
+	end
+
+	def update
+		@interview = Interview.find(params[:id])
+		currInterview = Interview.new(interview_params)
+		currInterview.id = params[:id]
+        if not params[:participants]
+            @interview.errors[:base] << "Participants must be selected."
+			render 'new'
+			return
+        end
+		participant_id_array = params[:participants].map { |e| e.to_i  }
+		participant_id_array.each do |participant_id|
+			currInterview.participants << Participant.find(participant_id)
+		end
+		valid_attributes = Interview.valid_attributes(currInterview)
+		if not valid_attributes
+			@interview.errors[:base] << "Invalid inputs detected."
+			render 'edit'
+			return
+		end
+		valid_duration = Interview.valid_duration(currInterview)
+		if not valid_duration
+			@interview.errors[:base] << "Start time should be less than End time"
+			render 'edit'
+			return
+		end
+		time_overlap = Interview.time_overlap(currInterview)
+		if time_overlap
+			@interview.errors[:base] << "Time overlap occured"
+			render 'edit'
+			return
+		end
+		@interview.update(title: currInterview.title, start_time: currInterview.start_time,
+			end_time: currInterview.end_time, participants: currInterview.participants)
+		redirect_to interviews_path
+	end
 
     private
 	def interview_params
