@@ -94,6 +94,12 @@ class InterviewsController < ApplicationController
 		redirect_to interviews_path
 	end
 
+	def destroy
+		interview = Interview.find(params[:id])
+		interview.destroy
+		redirect_to interviews_path
+	end
+
     private
 	def interview_params
 		params.require(:interview).permit(:title, :start_time, :end_time)

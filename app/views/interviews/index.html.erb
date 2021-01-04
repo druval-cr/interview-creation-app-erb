@@ -10,6 +10,7 @@
             <p>Participants: <%= @map_interview_participants[interview.id] %></p>
             <div class = "index__interview-links">
                 <%= link_to "Edit", edit_interview_path(interview) %>
+                <%= link_to 'Destroy', interview_path(interview), method: :delete, data: { confirm: 'Are you sure?' } %></td>
             <%# link_to "Resume Download", interview.resume.url(:original, false) %>
             </div>
         </div>
