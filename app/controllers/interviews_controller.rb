@@ -16,7 +16,8 @@ class InterviewsController < ApplicationController
         @default_participant_id_array = Array.new # No default
     end
 
-    def create
+	def create
+		puts params
         @interview = Interview.new(interview_params)
         participant_id_array = Array.new
         if not params[:participants]
@@ -90,7 +91,7 @@ class InterviewsController < ApplicationController
 			return
 		end
 		@interview.update(title: currInterview.title, start_time: currInterview.start_time,
-			end_time: currInterview.end_time, participants: currInterview.participants)
+			end_time: currInterview.end_time, participants: currInterview.participants, resume: currInterview.resume)
 		redirect_to interviews_path
 	end
 
@@ -102,6 +103,6 @@ class InterviewsController < ApplicationController
 
     private
 	def interview_params
-		params.require(:interview).permit(:title, :start_time, :end_time)
+		params.require(:interview).permit(:title, :start_time, :end_time, :resume)
 	end
 end

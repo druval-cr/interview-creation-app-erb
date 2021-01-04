@@ -1,5 +1,5 @@
 
-<%= form_with model: @interview, local: true do |form| %>
+<%= form_with model: @interview, local: true, html: { multipart: true } do |form| %>
 
   <% if @interview.errors.any? %>
     <div id="error_explanation">
@@ -36,6 +36,18 @@
       options_for_select(participants_array, @default_participant_id_array), multiple: true)
     %>
   </p>
+
+  <% if @interview.resume_file_name %>
+    <p>
+      <%= link_to "View Current Resume", @interview.resume.url(:original, false) %>
+    </p>
+  <% end %>
+
+  <p>
+    <%= form.label :resume %> (pdf format)<br>
+    <%= form.file_field :resume %>
+  </p>
+
   <p>
     <%= form.submit %>
   </p>
