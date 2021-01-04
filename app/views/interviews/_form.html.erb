@@ -1,0 +1,42 @@
+
+<%= form_with model: @interview, local: true do |form| %>
+
+  <% if @interview.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@interview.errors.count, "error") %> prohibited this Interview from being saved:
+      </h2>
+      <ul>
+        <% @interview.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+
+  <p>
+    <%= form.label :start_time %><br>
+    <%= form.datetime_field :start_time %>
+  </p>
+
+  <p>
+    <%= form.label :end_time %><br>
+    <%= form.datetime_field :end_time %>
+  </p>
+  
+  <p>
+    <%= form.label :participants %><br>
+    <% participants_array = Participant.all.map { |participant| [participant.email, participant.id] } %>
+    <%= select_tag(:participants, 
+      options_for_select(participants_array, @default_participant_id_array), multiple: true)
+    %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

@@ -1,0 +1,14 @@
+<div class = "main-container">
+    <div class = "index__create-interview-link">
+        <%= link_to "Create Interview", new_interview_path %>
+    </div>
+    <% @interviews.each do |interview|%>
+        <div class = "index__interview">
+            <h3><%= interview.title %></h3>
+            <p>Start Time: <%= interview.start_time %></p>
+            <p>End Time: <%= interview.end_time %></p>
+            <p>Participants: <%= @map_interview_participants[interview.id] %></p>
+            <%# link_to "Resume Download", interview.resume.url(:original, false) %>
+        </div>
+    <% end %>
+<div>

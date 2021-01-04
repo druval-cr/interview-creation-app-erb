@@ -1,0 +1,26 @@
+// Place all the styles related to the interviews controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.main-container{
+    padding: 30px 100px;
+}
+
+.index__create-interview-link, .new__home-link{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.index__interview{
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.new__form-container{
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 0 20px;
+}
