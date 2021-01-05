@@ -47,13 +47,10 @@ class InterviewsController < ApplicationController
 			return
 		end
 		@interview.save
-		@interview.participants.each do |participant|
-			#mail = ParticipantMailer.interview_reminder_email(participant)
-			t = Time.now
-			current = DateTime.new(t.year,t.month,t.day,t.hour,t.min,t.sec).to_i
-			puts (@interview.start_time.utc.to_i - current - 1800)
-			InterviewReminderJob.set(:wait => (@interview.start_time.utc.to_i - current - 1800)).perform_later(participant)
-		end
+		t = Time.now
+		current = DateTime.new(t.year,t.month,t.day,t.hour,t.min,t.sec).to_i
+		delay_time = @interview.start_time.utc.to_i - current - 1800
+		InterviewReminderJob.set(:wait => delay_time).perform_later(@interview.id)
 		redirect_to interviews_path
 	end
 	
@@ -96,10 +93,11 @@ class InterviewsController < ApplicationController
 			render 'edit'
 			return
 		end
+		prev_start_time = @interview.start_time
 		@interview.update(title: currInterview.title, start_time: currInterview.start_time,
 			end_time: currInterview.end_time, participants: currInterview.participants, resume: currInterview.resume)
-		@interview.participants.each do |participant|
-			InterviewUpdateJob.perform_later(participant)
+		if prev_start_time != @interview.start_time
+			InterviewUpdateJob.perform_later(@interview.id)
 		end
 		redirect_to interviews_path
 	end
