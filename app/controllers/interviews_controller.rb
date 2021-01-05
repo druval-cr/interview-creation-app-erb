@@ -17,7 +17,6 @@ class InterviewsController < ApplicationController
     end
 
 	def create
-		puts params
         @interview = Interview.new(interview_params)
         participant_id_array = Array.new
         if not params[:participants]
@@ -48,6 +47,13 @@ class InterviewsController < ApplicationController
 			return
 		end
 		@interview.save
+		@interview.participants.each do |participant|
+			#mail = ParticipantMailer.interview_reminder_email(participant)
+			t = Time.now
+			current = DateTime.new(t.year,t.month,t.day,t.hour,t.min,t.sec).to_i
+			puts (@interview.start_time.utc.to_i - current - 1800)
+			InterviewReminderJob.set(:wait => (@interview.start_time.utc.to_i - current - 1800)).perform_later(participant)
+		end
 		redirect_to interviews_path
 	end
 	
@@ -92,6 +98,9 @@ class InterviewsController < ApplicationController
 		end
 		@interview.update(title: currInterview.title, start_time: currInterview.start_time,
 			end_time: currInterview.end_time, participants: currInterview.participants, resume: currInterview.resume)
+		@interview.participants.each do |participant|
+			InterviewUpdateJob.perform_later(participant)
+		end
 		redirect_to interviews_path
 	end
 

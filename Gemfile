@@ -32,6 +32,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem "paperclip", "~> 6.0.0"
 
+gem 'sidekiq'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
